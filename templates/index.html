@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Bot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-box" id="chat-box">
+            <!-- Mensajes del chat aparecerán aquí -->
+        </div>
+        <form id="chat-form">
+            <input type="text" id="message" placeholder="Escribe un mensaje..." required>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('chat-form');
+        const chatBox = document.getElementById('chat-box');
+        
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const message = document.getElementById('message').value;
+            const userMessage = document.createElement('div');
+            userMessage.classList.add('user-message');
+            userMessage.innerHTML = `<b>Tú:</b> ${message}`;
+            chatBox.appendChild(userMessage);
+            document.getElementById('message').value = '';
+        });
+    </script>
+</body>
+</html>
