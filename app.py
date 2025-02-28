@@ -1,8 +1,11 @@
 import json
+import openai
 from flask import Flask, render_template, request, jsonify
+from config import OPENAI_API_KEY
 from responses import get_response
 
 app = Flask(__name__)
+openai.api_key = OPENAI_API_KEY
 
 CHAT_HISTORY_FILE = "chat_history.json"
 
@@ -25,8 +28,12 @@ def index():
 @app.route("/chat", methods=["POST"])
 def chat():
     user_message = request.json.get("message", "").strip()
-    bot_response = get_response(user_message)
-
+    
+    if user_message.startswith("/"):
+        bot_response = get_response(user_message)  # Manejar comandos
+    else:
+        bot_response = get_ai_response(user_message)  # Usar IA de OpenAI
+    
     chat_entry = {"user": user_message, "bot": bot_response}
     
     history = load_chat_history()
@@ -34,6 +41,14 @@ def chat():
     save_chat_history(history)
 
     return jsonify({"response": bot_response, "history": history})
+
+def get_ai_response(prompt):
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "system", "content": "Eres un asistente útil."},
+                  {"role": "user", "content": prompt}]
+    )
+    return response["choices"][0]["message"]["content"]
 
 if __name__ == "__main__":
     app.run(debug=True)
