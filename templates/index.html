@@ -1,38 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dark Chk Chat</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Dark Chat 1.0</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="chat-container">
-        <div class="chat-header">
-            <h1>Dark Chk</h1>
-        </div>
-        <div class="chat-box" id="chat-box">
-            <!-- Los mensajes del chat aparecerán aquí -->
-        </div>
-        <form id="chat-form">
-            <input type="text" id="message" placeholder="Escribe un mensaje..." required>
-            <button type="submit">Enviar</button>
-        </form>
+        <div id="chat-box"></div>
+        <input type="text" id="user-input" placeholder="Escribe un mensaje...">
+        <button onclick="sendMessage()">Enviar</button>
     </div>
 
     <script>
-        const form = document.getElementById('chat-form');
-        const chatBox = document.getElementById('chat-box');
-        
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const message = document.getElementById('message').value;
-            const userMessage = document.createElement('div');
-            userMessage.classList.add('user-message');
-            userMessage.innerHTML = `<b>Tú:</b> ${message}`;
-            chatBox.appendChild(userMessage);
-            document.getElementById('message').value = '';
-        });
+        function sendMessage() {
+            let input = document.getElementById("user-input");
+            let message = input.value.trim();
+            if (message === "") return;
+
+            let chatBox = document.getElementById("chat-box");
+            chatBox.innerHTML += `<div class="user-message">${message}</div>`;
+
+            fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                chatBox.innerHTML += `<div class="bot-message">${data.response}</div>`;
+                input.value = "";
+            });
+        }
     </script>
 </body>
 </html>
