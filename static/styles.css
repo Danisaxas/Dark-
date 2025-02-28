@@ -77,3 +77,33 @@ button {
     font-size: 18px;
     border-radius: 5px;
 }
+
+.login-container {
+    width: 300px;
+    padding: 20px;
+    margin: auto;
+    margin-top: 10%;
+    text-align: center;
+    background: #333;
+    color: white;
+    border-radius: 10px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    background: #0a84ff;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
