@@ -8,7 +8,12 @@
 </head>
 <body>
     <div class="chat-container">
-        <div id="chat-box"></div>
+        <div id="chat-box">
+            {% for chat in chat_history %}
+                <div class="user-message"><span>{{ chat.user }}</span></div>
+                <div class="bot-message"><span>{{ chat.bot }}</span></div>
+            {% endfor %}
+        </div>
         <div class="input-container">
             <input type="text" id="user-input" placeholder="Escribe un mensaje..." onkeypress="handleKeyPress(event)">
             <button onclick="sendMessage()">➤</button>
