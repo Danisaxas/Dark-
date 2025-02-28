@@ -10,9 +10,9 @@ def index():
 def chat():
     user_message = request.json.get("message", "")
     if user_message.lower() == "/start":
-        bot_response = "Hola, soy Dark Chat 1.0"
+        bot_response = "Hola, soy Dark Chat 1.0. ¿En qué puedo ayudarte?"
     else:
-        bot_response = "No entiendo ese comando."
+        bot_response = "No entiendo ese comando. Intenta nuevamente."
     return jsonify({"response": bot_response})
 
 if __name__ == '__main__':

@@ -9,8 +9,10 @@
 <body>
     <div class="chat-container">
         <div id="chat-box"></div>
-        <input type="text" id="user-input" placeholder="Escribe un mensaje...">
-        <button onclick="sendMessage()">Enviar</button>
+        <div class="input-container">
+            <input type="text" id="user-input" placeholder="Escribe un mensaje..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">➤</button>
+        </div>
     </div>
 
     <script>
@@ -20,7 +22,7 @@
             if (message === "") return;
 
             let chatBox = document.getElementById("chat-box");
-            chatBox.innerHTML += `<div class="user-message">${message}</div>`;
+            chatBox.innerHTML += `<div class="user-message"><span>${message}</span></div>`;
 
             fetch("/chat", {
                 method: "POST",
@@ -29,9 +31,16 @@
             })
             .then(response => response.json())
             .then(data => {
-                chatBox.innerHTML += `<div class="bot-message">${data.response}</div>`;
+                chatBox.innerHTML += `<div class="bot-message"><span>${data.response}</span></div>`;
                 input.value = "";
+                chatBox.scrollTop = chatBox.scrollHeight;
             });
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
         }
     </script>
 </body>
